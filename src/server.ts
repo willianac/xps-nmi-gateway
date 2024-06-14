@@ -1,24 +1,17 @@
 import "dotenv/config";
 import express from 'express';
 import cors from "cors";
+import router from "./routes.js";
 
 const app = express();
 
+app.use(express.json())
 app.use(cors())
+app.use(router)
 
 const PORT = process.env.PORT || 3000
 const HOST = process.env.HOST || 'localhost';
 
-app.get('/', (req, res) => {
-  console.log("received request at root", )
-  res.send(`Hello from the server runnin on port ${PORT} and host ${HOST}`)
-});
-
-app.get("/test", (req, res) => {
-  console.log("received request at '/test'", )
-  res.send("Respondendo com sucesso")
-})
-
-app.listen(PORT, () => {
+app.listen(Number(PORT), HOST, () => {
   console.log('Server started on port ' + PORT);
 });
