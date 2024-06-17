@@ -1,5 +1,6 @@
 import fetch from "node-fetch";
 import { TransactionPayload } from "./types/TransactionPayload.js";
+import { NMITransactionResponse } from "./types/NMITransactionResponse.js";
 
 export async function handleTransaction(payload: TransactionPayload) {
   try {
@@ -11,6 +12,8 @@ export async function handleTransaction(payload: TransactionPayload) {
     encodedParams.set('payment_token', payload.payment_token)
     encodedParams.set('type', 'sale');
     encodedParams.set('first_name', payload.first_name)
+    encodedParams.set('last_name', payload.last_name)
+    encodedParams.set('address1', payload.address1)
     
     const res = await fetch(process.env.NMI_API_URL as string, {
       headers: {
@@ -21,9 +24,13 @@ export async function handleTransaction(payload: TransactionPayload) {
       body: encodedParams
     })
     const str = await res.text()
-    console.log("STRING RESPONSE IS: ")
-    console.log(str)
+
+    const responseParams = new URLSearchParams(str)
+    const responseObj = Object.fromEntries(responseParams.entries()) as NMITransactionResponse
+
+    return responseObj;
   } catch (error) {
-    return error
+    console.log(error)
+    throw new Error("Error while trying to hit NMI APIs.")
   }
 }
