@@ -14,6 +14,10 @@ export async function handleTransaction(payload: TransactionPayload) {
     encodedParams.set('first_name', payload.first_name)
     encodedParams.set('last_name', payload.last_name)
     encodedParams.set('address1', payload.address1)
+    encodedParams.set('country', payload.country)
+    encodedParams.set('state', payload.state)
+    encodedParams.set('city', payload.city)
+    encodedParams.set('zip', payload.zip)
     
     const res = await fetch(process.env.NMI_API_URL as string, {
       headers: {
